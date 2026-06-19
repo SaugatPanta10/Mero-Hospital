@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Detail – Doctor Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <div class="flex">
+        <aside class="w-64 bg-white border-r border-gray-200 min-h-screen shrink-0">
+            <nav class="p-4 space-y-1">
+                <a href="/dashboard/"
+                    class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 text-sm">Dashboard</a>
+                <a href="/schedule/"
+                    class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 text-sm">Schedule</a>
+                <a href="/consultations/"
+                    class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 text-sm">Consultations</a>
+                <a href="/patients/"
+                    class="flex items-center gap-3 px-3 py-2 rounded-lg bg-blue-50 text-blue-700 font-medium text-sm">Patients</a>
+            </nav>
+        </aside>
+
+        <main class="flex-1 p-8 space-y-6">
+            <a href="/patients/" class="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <line x1="19" y1="12" x2="5" y2="12" />
+                    <polyline points="12 19 5 12 12 5" />
+                </svg>
+                Back to Patients
+            </a>
+
+            <!-- Patient Header -->
+            <div class="bg-white rounded-xl border border-gray-200 p-6">
+                <div class="flex items-start justify-between">
+                    <div class="flex items-start gap-6">
+                        <div
+                            class="h-20 w-20 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-2xl">
+                            SP</div>
+                        <div>
+                            <div class="flex items-center gap-3 mb-2">
+                                <h1 class="text-2xl font-semibold">Saugat Panta</h1>
+                                <span
+                                    class="px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-xs font-medium">Active
+                                    Patient</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-x-10 gap-y-2 text-sm text-gray-600">
+                                <p><span class="font-medium text-gray-900">Age:</span> 28 years</p>
+                                <p><span class="font-medium text-gray-900">Gender:</span> Male</p>
+                                <p><span class="font-medium text-gray-900">Blood Type:</span> A+</p>
+                                <p>📞 +977-9841234567</p>
+                                <p>✉️ saugat.panta@email.com</p>
+                                <p>📍 Kathmandu, Nepal</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="border border-gray-300 px-4 py-2 rounded-lg text-sm hover:bg-gray-50">Schedule
+                            Appointment</button>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">Start
+                            Consultation</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Allergies & Conditions -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-xl border border-gray-200 p-6">
+                    <h2 class="font-semibold mb-3 flex items-center gap-2"><span class="text-red-600">⚠</span> Allergies
+                    </h2>
+                    <div class="flex flex-wrap gap-2">
+                        <span
+                            class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium">Penicillin</span>
+                        <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium">Peanuts</span>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-200 p-6">
+                    <h2 class="font-semibold mb-3 flex items-center gap-2"><span class="text-orange-600">◉</span>
+                        Chronic Conditions</h2>
+                    <div class="flex flex-wrap gap-2">
+                        <span
+                            class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-medium">Hypertension</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detail Tabs -->
+            <div class="border-b border-gray-200">
+                <nav class="flex gap-1">
+                    <button onclick="showDetailTab('history')" id="dtab-history"
+                        class="dtab px-4 py-2 text-sm font-medium border-b-2 border-blue-600 text-blue-600">Medical
+                        History</button>
+                    <button onclick="showDetailTab('medications')" id="dtab-medications"
+                        class="dtab px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700">Medications</button>
+                    <button onclick="showDetailTab('labs')" id="dtab-labs"
+                        class="dtab px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700">Lab
+                        Results</button>
+                    <button onclick="showDetailTab('documents')" id="dtab-documents"
+                        class="dtab px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700">Documents</button>
+                </nav>
+            </div>
+
+            <!-- Medical History -->
+            <div id="dpanel-history" class="space-y-4">
+                <div class="bg-white rounded-xl border border-gray-200 p-6">
+                    <div class="flex gap-4">
+                        <div class="p-3 bg-blue-50 rounded-lg shrink-0"><svg class="h-6 w-6 text-blue-600" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                            </svg></div>
+                        <div>
+                            <div class="flex items-center gap-3 mb-1">
+                                <h3 class="font-semibold">Hypertension – Stage 1</h3><span
+                                    class="border border-gray-300 text-gray-600 px-2 py-0.5 rounded text-xs">Jun 16,
+                                    2026</span>
+                            </div>
+                            <p class="text-sm text-gray-500 mb-2">Dr. Govinda Rokaya</p>
+                            <p class="text-sm"><span class="font-medium text-gray-900">Notes:</span> Patient showing
+                                improvement. Blood pressure readings are stable.</p>
+                            <p class="text-sm mt-1"><span class="font-medium text-gray-900">Prescription:</span>
+                                Amlodipine 5mg daily</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-200 p-6">
+                    <div class="flex gap-4">
+                        <div class="p-3 bg-blue-50 rounded-lg shrink-0"><svg class="h-6 w-6 text-blue-600" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                            </svg></div>
+                        <div>
+                            <div class="flex items-center gap-3 mb-1">
+                                <h3 class="font-semibold">Hypertension – Stage 1</h3><span
+                                    class="border border-gray-300 text-gray-600 px-2 py-0.5 rounded text-xs">May 20,
+                                    2026</span>
+                            </div>
+                            <p class="text-sm text-gray-500 mb-2">Dr. Govinda Rokaya</p>
+                            <p class="text-sm"><span class="font-medium text-gray-900">Notes:</span> Initial diagnosis.
+                                Started medication.</p>
+                            <p class="text-sm mt-1"><span class="font-medium text-gray-900">Prescription:</span>
+                                Amlodipine 5mg daily</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-200 p-6">
+                    <div class="flex gap-4">
+                        <div class="p-3 bg-blue-50 rounded-lg shrink-0"><svg class="h-6 w-6 text-blue-600" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                            </svg></div>
+                        <div>
+                            <div class="flex items-center gap-3 mb-1">
+                                <h3 class="font-semibold">Routine Checkup</h3><span
+                                    class="border border-gray-300 text-gray-600 px-2 py-0.5 rounded text-xs">Apr 10,
+                                    2026</span>
+                            </div>
+                            <p class="text-sm text-gray-500 mb-2">Dr. Govinda Rokaya</p>
+                            <p class="text-sm"><span class="font-medium text-gray-900">Notes:</span> All vitals normal.
+                                General health good.</p>
+                            <p class="text-sm mt-1"><span class="font-medium text-gray-900">Prescription:</span> None
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medications -->
+            <div id="dpanel-medications" class="hidden">
+                <div class="bg-white rounded-xl border border-gray-200 p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <h2 class="font-semibold">Current Medications</h2>
+                            <p class="text-sm text-gray-500">Active prescriptions for this patient</p>
+                        </div>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">Add
+                            Medication</button>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-4 border rounded-lg">
+                            <div class="flex items-center gap-4">
+                                <div class="p-3 bg-purple-50 rounded-lg"><svg class="h-6 w-6 text-purple-600"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M10.5 20H4a2 2 0 01-2-2V5c0-1.1.9-2 2-2h3.93a2 2 0 011.66.9l.82 1.2a2 2 0 001.66.9H20a2 2 0 012 2v3" />
+                                        <circle cx="18" cy="18" r="3" />
+                                        <path d="M22 22l-1.5-1.5" />
+                                    </svg></div>
+                                <div>
+                                    <p class="font-semibold">Amlodipine</p>
+                                    <p class="text-sm text-gray-500">5mg – Once daily</p>
+                                    <p class="text-xs text-gray-400 mt-0.5">Started: 5/20/2026</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span
+                                    class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-medium">Active</span>
+                                <button
+                                    class="border border-gray-300 px-3 py-1.5 rounded-lg text-xs hover:bg-gray-50">Edit</button>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between p-4 border rounded-lg">
+                            <div class="flex items-center gap-4">
+                                <div class="p-3 bg-purple-50 rounded-lg"><svg class="h-6 w-6 text-purple-600"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <line x1="12" y1="8" x2="12" y2="16" />
+                                        <line x1="8" y1="12" x2="16" y2="12" />
+                                    </svg></div>
+                                <div>
+                                    <p class="font-semibold">Aspirin</p>
+                                    <p class="text-sm text-gray-500">81mg – Once daily</p>
+                                    <p class="text-xs text-gray-400 mt-0.5">Started: 5/20/2026</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span
+                                    class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-medium">Active</span>
+                                <button
+                                    class="border border-gray-300 px-3 py-1.5 rounded-lg text-xs hover:bg-gray-50">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lab Results -->
+            <div id="dpanel-labs" class="hidden">
+                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+                    <div class="p-6 border-b border-gray-100">
+                        <h2 class="font-semibold">Laboratory Results</h2>
+                        <p class="text-sm text-gray-500">Recent test results and findings</p>
+                    </div>
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50 border-b border-gray-200">
+                            <tr>
+                                <th class="text-left px-6 py-3 font-medium text-gray-600">Date</th>
+                                <th class="text-left px-6 py-3 font-medium text-gray-600">Test</th>
+                                <th class="text-left px-6 py-3 font-medium text-gray-600">Result</th>
+                                <th class="text-left px-6 py-3 font-medium text-gray-600">Status</th>
+                                <th class="text-right px-6 py-3 font-medium text-gray-600">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4">Jun 10, 2026</td>
+                                <td class="px-6 py-4 font-medium">Blood Pressure</td>
+                                <td class="px-6 py-4">128/82 mmHg</td>
+                                <td class="px-6 py-4"><span
+                                        class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-medium">Normal</span>
+                                </td>
+                                <td class="px-6 py-4 text-right"><button
+                                        class="border border-gray-300 px-3 py-1.5 rounded-lg text-xs hover:bg-gray-50">View
+                                        Details</button></td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4">Jun 10, 2026</td>
+                                <td class="px-6 py-4 font-medium">Cholesterol</td>
+                                <td class="px-6 py-4">185 mg/dL</td>
+                                <td class="px-6 py-4"><span
+                                        class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-medium">Normal</span>
+                                </td>
+                                <td class="px-6 py-4 text-right"><button
+                                        class="border border-gray-300 px-3 py-1.5 rounded-lg text-xs hover:bg-gray-50">View
+                                        Details</button></td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4">May 15, 2026</td>
+                                <td class="px-6 py-4 font-medium">Blood Sugar</td>
+                                <td class="px-6 py-4">95 mg/dL</td>
+                                <td class="px-6 py-4"><span
+                                        class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-medium">Normal</span>
+                                </td>
+                                <td class="px-6 py-4 text-right"><button
+                                        class="border border-gray-300 px-3 py-1.5 rounded-lg text-xs hover:bg-gray-50">View
+                                        Details</button></td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4">May 15, 2026</td>
+                                <td class="px-6 py-4 font-medium">HbA1c</td>
+                                <td class="px-6 py-4">5.4%</td>
+                                <td class="px-6 py-4"><span
+                                        class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-medium">Normal</span>
+                                </td>
+                                <td class="px-6 py-4 text-right"><button
+                                        class="border border-gray-300 px-3 py-1.5 rounded-lg text-xs hover:bg-gray-50">View
+                                        Details</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Documents -->
+            <div id="dpanel-documents" class="hidden">
+                <div class="bg-white rounded-xl border border-gray-200 p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <h2 class="font-semibold">Medical Documents</h2>
+                            <p class="text-sm text-gray-500">Uploaded reports and medical records</p>
+                        </div>
+                        <button onclick="document.getElementById('upload-modal').classList.remove('hidden')"
+                            class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">⬆ Upload
+                            Document</button>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
+                            <div class="flex items-center gap-4">
+                                <div class="p-3 bg-blue-50 rounded-lg"><svg class="h-6 w-6 text-blue-600" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                                        <polyline points="14 2 14 8 20 8" />
+                                    </svg></div>
+                                <div>
+                                    <p class="font-medium text-sm">Blood Test Results – June 2026</p>
+                                    <div class="flex items-center gap-2 mt-1">
+                                        <span
+                                            class="border border-gray-300 text-gray-600 px-2 py-0.5 rounded text-xs">Lab
+                                            Report</span>
+                                        <span class="text-xs text-gray-400">6/10/2026 • 245 KB</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="border border-gray-300 px-3 py-1.5 rounded-lg text-xs hover:bg-gray-50">⬇
+                                Download</button>
+                        </div>
+                        <div class="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
+                            <div class="flex items-center gap-4">
+                                <div class="p-3 bg-blue-50 rounded-lg"><svg class="h-6 w-6 text-blue-600" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                                        <polyline points="14 2 14 8 20 8" />
+                                    </svg></div>
+                                <div>
+                                    <p class="font-medium text-sm">X-Ray Chest</p>
+                                    <div class="flex items-center gap-2 mt-1">
+                                        <span
+                                            class="border border-gray-300 text-gray-600 px-2 py-0.5 rounded text-xs">Imaging</span>
+                                        <span class="text-xs text-gray-400">4/15/2026 • 1.2 MB</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="border border-gray-300 px-3 py-1.5 rounded-lg text-xs hover:bg-gray-50">⬇
+                                Download</button>
+                        </div>
+                        <div class="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
+                            <div class="flex items-center gap-4">
+                                <div class="p-3 bg-blue-50 rounded-lg"><svg class="h-6 w-6 text-blue-600" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                                        <polyline points="14 2 14 8 20 8" />
+                                    </svg></div>
+                                <div>
+                                    <p class="font-medium text-sm">ECG Report</p>
+                                    <div class="flex items-center gap-2 mt-1">
+                                        <span
+                                            class="border border-gray-300 text-gray-600 px-2 py-0.5 rounded text-xs">Test
+                                            Result</span>
+                                        <span class="text-xs text-gray-400">5/20/2026 • 180 KB</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="border border-gray-300 px-3 py-1.5 rounded-lg text-xs hover:bg-gray-50">⬇
+                                Download</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Upload Modal -->
+    <div id="upload-modal"
+        class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 space-y-4">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h3 class="font-semibold text-lg">Upload Medical Document</h3>
+                    <p class="text-sm text-gray-500">Add a document to the patient's records</p>
+                </div>
+                <button onclick="document.getElementById('upload-modal').classList.add('hidden')"
+                    class="text-gray-400 hover:text-gray-600 text-xl">✕</button>
+            </div>
+            <div><label class="block text-sm font-medium mb-1">Document Name</label><input type="text"
+                    placeholder="e.g., Blood Test Results"
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" /></div>
+            <div><label class="block text-sm font-medium mb-1">Document Type</label>
+                <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                    <option>Lab Report</option>
+                    <option>Imaging</option>
+                    <option>Prescription</option>
+                    <option>Test Result</option>
+                    <option>Other</option>
+                </select>
+            </div>
+            <div><label class="block text-sm font-medium mb-1">File</label><input type="file"
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" /></div>
+            <div><label class="block text-sm font-medium mb-1">Notes (Optional)</label><textarea rows="3"
+                    placeholder="Add any relevant notes"
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"></textarea></div>
+            <button onclick="document.getElementById('upload-modal').classList.add('hidden')"
+                class="w-full bg-blue-600 text-white py-2 rounded-lg text-sm font-medium hover:bg-blue-700">Upload
+                Document</button>
+        </div>
+    </div>
+
+    <script>
+        function showDetailTab(name) {
+            ['history', 'medications', 'labs', 'documents'].forEach(t => {
+                document.getElementById('dpanel-' + t).classList.add('hidden');
+                document.getElementById('dtab-' + t).classList.remove('border-blue-600', 'text-blue-600');
+                document.getElementById('dtab-' + t).classList.add('border-transparent', 'text-gray-500');
+            });
+            document.getElementById('dpanel-' + name).classList.remove('hidden');
+            document.getElementById('dtab-' + name).classList.add('border-blue-600', 'text-blue-600');
+            document.getElementById('dtab-' + name).classList.remove('border-transparent', 'text-gray-500');
+        }
+    </script>
+</body>
+
+</html>

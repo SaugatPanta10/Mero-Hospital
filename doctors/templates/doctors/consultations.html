@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Consultations – Doctor Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <div class="flex">
+        <aside class="w-64 bg-white border-r border-gray-200 min-h-screen shrink-0">
+            <nav class="p-4 space-y-1">
+                <a href="/dashboard/"
+                    class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 text-sm"><svg
+                        class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" />
+                        <rect x="14" y="3" width="7" height="7" />
+                        <rect x="14" y="14" width="7" height="7" />
+                        <rect x="3" y="14" width="7" height="7" />
+                    </svg>Dashboard</a>
+                <a href="/schedule/"
+                    class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 text-sm"><svg
+                        class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" />
+                        <line x1="16" y1="2" x2="16" y2="6" />
+                        <line x1="8" y1="2" x2="8" y2="6" />
+                        <line x1="3" y1="10" x2="21" y2="10" />
+                    </svg>Schedule</a>
+                <a href="/consultations/"
+                    class="flex items-center gap-3 px-3 py-2 rounded-lg bg-blue-50 text-blue-700 font-medium text-sm"><svg
+                        class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                    </svg>Consultations</a>
+                <a href="/patients/"
+                    class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 text-sm"><svg
+                        class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                    </svg>Patients</a>
+            </nav>
+        </aside>
+
+        <main class="flex-1 p-8 space-y-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-semibold mb-1">Consultation Notes</h1>
+                    <p class="text-sm text-gray-500">View and manage patient consultation records</p>
+                </div>
+                <button onclick="document.getElementById('new-consult-modal').classList.remove('hidden')"
+                    class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    New Consultation
+                </button>
+            </div>
+
+            <!-- Search -->
+            <div class="bg-white rounded-xl border border-gray-200 p-4">
+                <div class="relative">
+                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                    <input id="search-input" oninput="filterConsultations()"
+                        placeholder="Search by patient name, diagnosis, or date..."
+                        class="w-full pl-10 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="border-b border-gray-200">
+                <nav class="flex gap-1">
+                    <button onclick="showConsultTab('upcoming')" id="ctab-upcoming"
+                        class="ctab px-4 py-2 text-sm font-medium border-b-2 border-blue-600 text-blue-600">Upcoming
+                        (1)</button>
+                    <button onclick="showConsultTab('completed')" id="ctab-completed"
+                        class="ctab px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700">Completed
+                        (3)</button>
+                    <button onclick="showConsultTab('all')" id="ctab-all"
+                        class="ctab px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700">All
+                        (4)</button>
+                </nav>
+            </div>
+
+            <div id="consult-list" class="space-y-4"></div>
+        </main>
+    </div>
+
+    <!-- New Consultation Modal -->
+    <div id="new-consult-modal"
+        class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 space-y-4">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h3 class="font-semibold text-lg">Add Consultation Notes</h3>
+                    <p class="text-sm text-gray-500">Record details from the patient consultation</p>
+                </div>
+                <button onclick="document.getElementById('new-consult-modal').classList.add('hidden')"
+                    class="text-gray-400 hover:text-gray-600 text-xl">✕</button>
+            </div>
+            <div><label class="block text-sm font-medium mb-1">Patient</label>
+                <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                    <option>Saugat Panta</option>
+                    <option>Suvasis Giri</option>
+                    <option>Dipa Lama</option>
+                    <option>Dipak Singh</option>
+                </select>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div><label class="block text-sm font-medium mb-1">Date</label><input type="date" value="2026-06-16"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" /></div>
+                <div><label class="block text-sm font-medium mb-1">Time</label><input type="time"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" /></div>
+            </div>
+            <div><label class="block text-sm font-medium mb-1">Consultation Type</label>
+                <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                    <option>Initial Consultation</option>
+                    <option>Follow-up</option>
+                    <option>Emergency</option>
+                    <option>Routine Checkup</option>
+                </select>
+            </div>
+            <div><label class="block text-sm font-medium mb-1">Chief Complaint</label><textarea rows="2"
+                    placeholder="Enter patient's main concern"
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"></textarea></div>
+            <div><label class="block text-sm font-medium mb-1">Symptoms</label><textarea rows="3"
+                    placeholder="List observed symptoms"
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"></textarea></div>
+            <div><label class="block text-sm font-medium mb-1">Diagnosis</label><input type="text"
+                    placeholder="Enter diagnosis" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" />
+            </div>
+            <div><label class="block text-sm font-medium mb-1">Treatment Plan</label><textarea rows="4"
+                    placeholder="Describe the treatment plan"
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"></textarea></div>
+            <div><label class="block text-sm font-medium mb-1">Additional Notes</label><textarea rows="3"
+                    placeholder="Any additional observations"
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"></textarea></div>
+            <div><label class="block text-sm font-medium mb-1">Follow-up Required</label>
+                <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                    <option>No follow-up required</option>
+                    <option>1 week</option>
+                    <option>2 weeks</option>
+                    <option>1 month</option>
+                    <option>3 months</option>
+                </select>
+            </div>
+            <div class="flex gap-3 pt-2">
+                <button class="flex-1 bg-blue-600 text-white py-2 rounded-lg text-sm font-medium hover:bg-blue-700">Save
+                    Consultation</button>
+                <button class="flex-1 border border-gray-300 py-2 rounded-lg text-sm font-medium hover:bg-gray-50">Save
+                    as Draft</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const consultations = [
+            { id: 1, patient: 'Saugat Panta', initials: 'SP', date: '2026-06-16', time: '09:00 AM', type: 'Follow-up', status: 'completed', diagnosis: 'Hypertension - Stage 1', notes: 'Patient showing improvement. Blood pressure readings are stable.' },
+            { id: 2, patient: 'Suvasis Giri', initials: 'SG', date: '2026-06-16', time: '10:30 AM', type: 'Video Call', status: 'completed', diagnosis: 'Seasonal Allergies', notes: 'Prescribed antihistamines. Follow-up in 2 weeks.' },
+            { id: 3, patient: 'Dipa Lama', initials: 'DL', date: '2026-06-16', time: '02:00 PM', type: 'Initial Consultation', status: 'scheduled', diagnosis: '', notes: '' },
+            { id: 4, patient: 'Dipak Singh', initials: 'DS', date: '2026-06-15', time: '03:30 PM', type: 'Follow-up', status: 'completed', diagnosis: 'Type 2 Diabetes', notes: 'HbA1c levels improved. Continue current medication regimen.' },
+        ];
+
+        const statusColors = { completed: 'bg-green-100 text-green-700', scheduled: 'bg-blue-100 text-blue-700', cancelled: 'bg-red-100 text-red-700' };
+        let activeTab = 'upcoming';
+        let searchTerm = '';
+
+        function renderCard(c) {
+            return `
+      <div class="bg-white rounded-xl border border-gray-200 p-6 consultation-card" data-patient="${c.patient.toLowerCase()}" data-diagnosis="${c.diagnosis.toLowerCase()}" data-status="${c.status}">
+        <div class="flex items-start justify-between">
+          <div class="flex items-start gap-4 flex-1">
+            <div class="h-12 w-12 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-semibold shrink-0">${c.initials}</div>
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2 flex-wrap">
+                <h3 class="font-semibold">${c.patient}</h3>
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[c.status]}">${c.status.charAt(0).toUpperCase() + c.status.slice(1)}</span>
+                <span class="px-2 py-0.5 rounded-full text-xs border border-gray-300 text-gray-600">${c.type}</span>
+              </div>
+              <div class="flex items-center gap-4 text-xs text-gray-500 mb-2">
+                <span>📅 ${new Date(c.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                <span>🕐 ${c.time}</span>
+              </div>
+              ${c.diagnosis ? `<div class="space-y-1 text-sm"><p><span class="font-medium text-gray-900">Diagnosis:</span> <span class="text-gray-700">${c.diagnosis}</span></p><p><span class="font-medium text-gray-900">Notes:</span> <span class="text-gray-700">${c.notes}</span></p></div>` : '<p class="text-sm text-gray-400">Scheduled appointment – awaiting consultation</p>'}
+            </div>
+          </div>
+          <div class="flex gap-2 ml-4 shrink-0">
+            ${c.status === 'scheduled' ? '<button class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-blue-700">Start Consultation</button>' : '<button class="border border-gray-300 px-3 py-1.5 rounded-lg text-xs hover:bg-gray-50">View Details</button>'}
+          </div>
+        </div>
+      </div>`;
+        }
+
+        function filterConsultations() {
+            searchTerm = document.getElementById('search-input').value.toLowerCase();
+            renderList();
+        }
+
+        function showConsultTab(name) {
+            activeTab = name;
+            ['upcoming', 'completed', 'all'].forEach(t => {
+                document.getElementById('ctab-' + t).classList.remove('border-blue-600', 'text-blue-600');
+                document.getElementById('ctab-' + t).classList.add('border-transparent', 'text-gray-500');
+            });
+            document.getElementById('ctab-' + name).classList.add('border-blue-600', 'text-blue-600');
+            document.getElementById('ctab-' + name).classList.remove('border-transparent', 'text-gray-500');
+            renderList();
+        }
+
+        function renderList() {
+            let list = consultations;
+            if (activeTab === 'upcoming') list = list.filter(c => c.status === 'scheduled');
+            if (activeTab === 'completed') list = list.filter(c => c.status === 'completed');
+            if (searchTerm) list = list.filter(c => c.patient.toLowerCase().includes(searchTerm) || c.diagnosis.toLowerCase().includes(searchTerm));
+            document.getElementById('consult-list').innerHTML = list.map(renderCard).join('') || '<p class="text-gray-400 text-center py-8">No consultations found.</p>';
+        }
+
+        renderList();
+    </script>
+</body>
+
+</html>

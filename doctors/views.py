@@ -1,20 +1,19 @@
 from django.shortcuts import render
 
-def login(request):
-    return render(request, "doctors/doctor_login.html")
-
-def home(request):
-    return render(request, 'doctors/home.html')
-
+def login_view(request):
+    return render(request, 'doctors/login.html')
 
 def dashboard(request):
-    return render(request, 'doctors/doctor_dashboard.html')
-
-def consolation(request):
-    return render(request,'doctors/consolation_workspace.html')
-
-def patient(request):
-    return render(request,'doctors/patient_directory.html')
+    return render(request, 'doctors/dashboard.html')
 
 def schedule(request):
-    return render(request,'doctors/schedule.html')
+    return render(request, 'doctors/schedule.html')
+
+def consultations(request):
+    return render(request, 'doctors/consultations.html')
+
+def patients(request):
+    return render(request, 'doctors/patients.html')
+
+def patient_detail(request, patient_id):
+    return render(request, 'doctors/patient_detail.html', {'patient_id': patient_id})
