@@ -1,17 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patient</title>
+    <title>Login</title>
     <a href="{% url 'home' %}"
         style="color: white; text-decoration: none; background-color: #2b2cb0; padding: 8px 16px; border-radius: 5px; font-weight: bold; font-size: 1em;">
         Home</a>
 </head>
 
 <body>
-    <a> Patient Page </a>
+    <h2>Doctor Login</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+    </form>
 </body>
 
 </html>

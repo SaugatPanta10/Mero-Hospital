@@ -1,5 +1,7 @@
 from django.shortcuts import render
 
+def login(request):
+    return render(request, "doctors/doctor_login.html")
 
 def home(request):
     return render(request, 'doctors/home.html')
