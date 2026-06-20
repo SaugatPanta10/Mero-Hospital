@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth import login
 from .forms import UserRegistrationForm, UserLoginForm
 
 
@@ -17,11 +18,12 @@ def login_view(request):
     if request.method == 'POST':
         form = UserLoginForm(request.POST)
         if form.is_valid():
-            form.save()
+            login(request, form.cleaned_data['user'])
             return redirect('dashboard')
     else:
         form = UserLoginForm()
-    return render(request, 'doctors/login.html',{'form':form})
+    return render(request, 'doctors/login.html', {'form': form})
+
 
 def dashboard(request):
     return render(request, 'doctors/dashboard.html')

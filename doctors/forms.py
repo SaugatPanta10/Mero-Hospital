@@ -1,6 +1,29 @@
 from django import forms
+from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
 from .models import MyUser
+
+
+class UserLoginForm(forms.Form):
+    username = forms.EmailField(
+        label="Email",
+        widget=forms.EmailInput(attrs={"autocomplete": "username", "class": "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"})
+    )
+    password = forms.CharField(
+        label="Password",
+        widget=forms.PasswordInput(attrs={"autocomplete": "current-password", "class": "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"})
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        username = cleaned_data.get("username")
+        password = cleaned_data.get("password")
+        if username and password:
+            user = authenticate(username=username, password=password)
+            if user is None:
+                raise forms.ValidationError("Invalid email or password.")
+            cleaned_data["user"] = user
+        return cleaned_data
 
 
 class UserRegistrationForm(forms.ModelForm):
