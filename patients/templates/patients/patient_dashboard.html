@@ -1,0 +1,212 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dashboard – Mero Hospital{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/patient_dashboard.css' %}" />{% endblock %}
+
+{# ── SIDEBAR PROFILE (patient has none at top) ─────────── #}
+{% block sidebar_profile %}{% endblock %}
+
+{# ── SIDEBAR NAV ───────────────────────────────────────── #}
+{% block sidebar_nav %}
+<a href="{% url 'patient_dashboard' %}" class="nav-item active">
+    <svg viewBox="0 0 24 24">
+        <rect x="3" y="3" width="7" height="7" />
+        <rect x="14" y="3" width="7" height="7" />
+        <rect x="3" y="14" width="7" height="7" />
+        <rect x="14" y="14" width="7" height="7" />
+    </svg>
+    Dashboard
+</a>
+<a href="#" class="nav-item">
+    <svg viewBox="0 0 24 24">
+        <rect x="3" y="4" width="18" height="18" rx="2" />
+        <line x1="16" y1="2" x2="16" y2="6" />
+        <line x1="8" y1="2" x2="8" y2="6" />
+        <line x1="3" y1="10" x2="21" y2="10" />
+    </svg>
+    My Appointments
+</a>
+<a href="#" class="nav-item">
+    <svg viewBox="0 0 24 24">
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <line x1="3" y1="9" x2="21" y2="9" />
+        <line x1="9" y1="21" x2="9" y2="9" />
+    </svg>
+    Medical Records
+</a>
+<a href="#" class="nav-item">
+    <svg viewBox="0 0 24 24">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+        <polyline points="22,6 12,13 2,6" />
+    </svg>
+    Messages
+</a>
+{% endblock %}
+
+{# ── SIDEBAR FOOTER ────────────────────────────────────── #}
+{% block sidebar_footer %}
+<button class="sidebar-cta" onclick="showToast('Opening booking…')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="5" x2="12" y2="19" />
+        <line x1="5" y1="12" x2="19" y2="12" />
+    </svg>
+    Book Appointment
+</button>
+
+<div class="sidebar-doctor">
+    <img src="https://api.dicebear.com/7.x/personas/svg?seed=doctor&backgroundColor=b6e3f4" alt="Dr. Sandeep Gupta" />
+    <div class="sidebar-doctor-info">
+        <span class="sidebar-doctor-name">Dr. Sandeep Gupta</span>
+        <span class="sidebar-doctor-role">Cardiology Specialist</span>
+    </div>
+</div>
+
+<div class="sidebar-links">
+    <a href="#" class="sidebar-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14" />
+        </svg>
+        Settings
+    </a>
+    <a href="#" class="sidebar-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+        </svg>
+        Support
+    </a>
+</div>
+{% endblock %}
+
+{# ── NOTIF BADGE ───────────────────────────────────────── #}
+{% block notif_badge %}<span class="notif-badge">2</span>{% endblock %}
+
+{# ══════════════════════════════════════════════════════════
+MAIN CONTENT
+══════════════════════════════════════════════════════════ #}
+{% block content %}
+
+{# Greeting #}
+<div class="pd-greeting">
+    <h1>Good morning, {{ patient.name|default:"Rohan Sharma" }}</h1>
+    <p>Here's what's happening with your health today.</p>
+</div>
+
+{# Top Row #}
+<div class="pd-top-row">
+
+    {# Upcoming Appointment #}
+    <div class="card pd-appt-card">
+        <div class="pd-appt-inner">
+            <div class="pd-appt-img">
+                <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=400&q=80"
+                    alt="Cardiology room" />
+            </div>
+            <div class="pd-appt-body">
+                <span class="pd-appt-label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+                        <rect x="3" y="4" width="18" height="18" rx="2" />
+                        <line x1="16" y1="2" x2="16" y2="6" />
+                        <line x1="8" y1="2" x2="8" y2="6" />
+                        <line x1="3" y1="10" x2="21" y2="10" />
+                    </svg>
+                    UPCOMING APPOINTMENT
+                </span>
+                <h2>{{ appointment.title|default:"General Cardiology Check-up" }}</h2>
+                <p class="pd-appt-meta">{{ appointment.doctor|default:"Dr. Sandeep Gupta" }} &bull; {{
+                    appointment.when|default:"Tomorrow, 10:00 AM" }}</p>
+                <div class="pd-appt-btns">
+                    <button class="btn-blue" onclick="showToast('Opening reschedule form…')">Reschedule</button>
+                    <button class="btn-outline" onclick="showToast('Loading appointment details…')">Details</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Lab Result #}
+    <div class="card pd-lab-card">
+        <div class="pd-lab-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="30" height="30">
+                <path
+                    d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18" />
+            </svg>
+        </div>
+        <h3>New Lab Result Available</h3>
+        <p>Complete Blood Count (CBC) results have been uploaded to your portal.</p>
+        <button class="btn-teal" onclick="showToast('Opening lab results…')">View Result</button>
+    </div>
+
+</div>{# /pd-top-row #}
+
+{# Quick Actions #}
+<div class="pd-quick-actions">
+    <button class="pd-quick-btn" onclick="showToast('Opening booking form…')">
+        <span class="pd-qicon pd-qicon-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                width="22" height="22">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <line x1="12" y1="8" x2="12" y2="16" />
+                <line x1="8" y1="12" x2="16" y2="12" />
+            </svg></span>
+        <span>Book Appointment</span>
+    </button>
+    <button class="pd-quick-btn" onclick="showToast('Connecting to support…')">
+        <span class="pd-qicon pd-qicon-light"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" width="22" height="22">
+                <path
+                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.86a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z" />
+            </svg></span>
+        <span>Contact Support</span>
+    </button>
+    <button class="pd-quick-btn" onclick="showToast('Refill request sent…')">
+        <span class="pd-qicon pd-qicon-teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                width="22" height="22">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg></span>
+        <span>Refill Prescription</span>
+    </button>
+    <button class="pd-quick-btn" onclick="showToast('Opening billing…')">
+        <span class="pd-qicon pd-qicon-gray"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                width="22" height="22">
+                <rect x="2" y="5" width="20" height="14" rx="2" />
+                <line x1="2" y1="10" x2="22" y2="10" />
+            </svg></span>
+        <span>Billing &amp; Invoices</span>
+    </button>
+</div>
+
+{# Bottom Row #}
+<div class="pd-bottom-row">
+
+    {# Health Reminders #}
+    <div class="pd-reminders-col">
+        <div class="pd-section-hdr">
+            <h3>Health Reminders</h3>
+            <a href="#" class="pd-mark-read" onclick="markAllRead(event)">Mark all read</a>
+        </div>
+        <div id="remindersList"></div>
+    </div>
+
+    {# Recent Records #}
+    <div class="card pd-records-card">
+        <div class="pd-records-hdr">
+            <h3>Recent Records</h3>
+        </div>
+        <div id="recordsList"></div>
+        <div class="pd-records-footer">
+            <a href="#" onclick="showToast('Loading all records…'); return false;" class="pd-view-all">View All
+                Records</a>
+        </div>
+    </div>
+
+</div>{# /pd-bottom-row #}
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="{% static 'js/patient_dashboard.js' %}"></script>
+{% endblock %}
