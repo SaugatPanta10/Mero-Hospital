@@ -57,9 +57,9 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'merohospital.urls'
 
 TEMPLATES = [
-   {
+    {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # Add this line
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -120,15 +120,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-    BASE_DIR / 'doctors' / 'static',
-    BASE_DIR / 'patients' / 'static',
-] 
-
+STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']  #dev static folder
+STATIC_ROOT = BASE_DIR / 'staticfiles'    # for production (collectstatic
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
