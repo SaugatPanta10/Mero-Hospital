@@ -1,12 +1,8 @@
 from django.shortcuts import render
-# from django.contrib.auth.decorators import login_required
 
-# @login_required
-def dashboard(request):
+def patient_dashboard(request):
     context = {
-        'patient': {
-            'name': 'Rohan Sharma',
-        },
+        'patient': {'name': 'Rohan Sharma'},
         'appointment': {
             'title': 'General Cardiology Check-up',
             'doctor': 'Dr. Sandeep Gupta',
